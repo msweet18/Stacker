@@ -9,5 +9,6 @@
     <string name="title_activity_puzzle">Puzzle</string>
     <string name="hurrah">Hurrah!!!</string>
     <string name="stacker">Stacker</string>
+    <string name="title_activity_game">GameActivity</string>
 
 </resources>
