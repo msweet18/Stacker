@@ -14,5 +14,11 @@
     <string name="kg2">2 kg</string>
     <string name="kg5">5 kg</string>
     <string name="kg10">10 kg</string>
+    <string name="title_activity_final_score">FinalScoreActivity</string>
+    <string name="player1">Player 1</string>
+    <string name="player2">Player 2</string>
+    <string name="score1">5</string>
+    <string name="score2">4</string>
+    <string name="EndGame">End Game</string>
 
 </resources>

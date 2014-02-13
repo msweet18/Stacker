@@ -26,6 +26,10 @@
             android:name="edu.msu.BlueSky.stacker.GameActivity"
             android:label="@string/title_activity_game" >
         </activity>
+        <activity
+            android:name="edu.msu.BlueSky.stacker.FinalScoreActivity"
+            android:label="@string/title_activity_final_score" >
+        </activity>
     </application>
 
 </manifest>

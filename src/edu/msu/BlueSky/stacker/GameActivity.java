@@ -2,14 +2,27 @@ package edu.msu.BlueSky.stacker;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 
 public class GameActivity extends Activity {
 
+	/**
+	 * The game's view in this activity's view
+	 */
+	private GameView gameView;
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
 		setContentView(R.layout.activity_game);
+		
+		if(bundle != null) {
+			// We have saved state
+			gameView = (GameView)this.findViewById(R.id.gameView);
+			gameView.loadInstanceState(bundle);
+		}
 	}
 
 	@Override
@@ -19,4 +32,17 @@ public class GameActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle bundle) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(bundle);
+		
+		gameView = (GameView)this.findViewById(R.id.gameView);
+		gameView.saveInstanceState(bundle);
+	}
+	
+	public void onEndGame(View view) {
+		Intent intent = new Intent(this, FinalScoreActivity.class);
+		startActivity(intent);
+	}
 }

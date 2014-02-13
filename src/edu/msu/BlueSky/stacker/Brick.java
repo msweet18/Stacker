@@ -33,6 +33,9 @@ public class Brick {
 			//assign color brick
 			brick = BitmapFactory.decodeResource(context.getResources(), R.drawable.brick_blue);
 		}
+		else{
+			brick = BitmapFactory.decodeResource(context.getResources(), R.drawable.brick_green1);
+		}
 	}
 	
 	public float getX() {

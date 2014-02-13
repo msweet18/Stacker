@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import android.R.string;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class Game {
+	
+	/**
+	 * The name of the bundle keys to save the puzzle
+	 */
+	private final static String XLOCATIONS = "Game.xLocations";
+	
 	/**
 	 * Collection of Bricks
 	 */
@@ -22,6 +29,8 @@ public class Game {
 
 	public Game(Context context, GameView view){
 		gameView = view;
+		bricks.add(new Brick(context, true));
+		bricks.add(new Brick(context, false));
 		bricks.add(new Brick(context, true));
 	}
 	
@@ -53,4 +62,31 @@ public class Game {
         }
         return false;
     }
+    
+    /**
+	 * Save the puzzle to a bundle
+	 * @param bundle The bundle we save to
+	 */
+	public void saveInstanceState(Bundle bundle) {
+		float [] xLocations = new float[bricks.size()];
+		
+		
+		for(int i=0;  i<bricks.size(); i++) {
+			Brick brick = bricks.get(i);
+			xLocations[i] = brick.getX();
+		}
+		
+		bundle.putFloatArray(XLOCATIONS, xLocations);
+	}
+	
+	/**
+	 * Read the puzzle from a bundle
+	 * @param bundle The bundle we save to
+	 */
+	public void loadInstanceState(Bundle bundle) {
+		float [] xLocations = bundle.getFloatArray(XLOCATIONS);
+		for(int i=0; i<xLocations.length; i++){
+			bricks.get(i).setX(xLocations[i]);
+		}
+	}
 }
