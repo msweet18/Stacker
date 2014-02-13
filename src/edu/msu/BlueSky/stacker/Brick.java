@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class Brick {
 	/**
@@ -11,7 +12,7 @@ public class Brick {
 	 * We use relative x locations in the range 0-1 for the center
 	 * of the brick.
 	 */
-	private float x = .5f;
+	private float xPosition = .5f;
 
 	/**
 	 * weight of the brick
@@ -27,20 +28,19 @@ public class Brick {
 
 	public Brick(Context context, boolean Player1){
 		IsPlayer1 = Player1;
-		
 		if(IsPlayer1)
 		{
-			//assign color
+			//assign color brick
 			brick = BitmapFactory.decodeResource(context.getResources(), R.drawable.brick_blue);
 		}
 	}
 	
 	public float getX() {
-		return x;
+		return xPosition;
 	}
 
 	public void setX(float x) {
-		this.x = x;
+		this.xPosition = x;
 	}
 
 	public int getWeight() {
@@ -50,10 +50,12 @@ public class Brick {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	public void draw(Canvas canvas){
-		
+	public void draw(Canvas canvas, int brickNumber){
+		int y = canvas.getHeight()-(brick.getHeight()*(brickNumber+1)); //y position to draw
+		int x = (int)(xPosition*canvas.getWidth())-brick.getWidth()/2;
+		Log.i("draw", "y = "+y);
 		canvas.save();
-		canvas.drawBitmap(brick, 0, 0, null);
+		canvas.drawBitmap(brick, x, y, null);
 		canvas.restore();
 	}
 }

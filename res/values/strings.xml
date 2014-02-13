@@ -10,5 +10,9 @@
     <string name="hurrah">Hurrah!!!</string>
     <string name="stacker">Stacker</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="kg1">1 kg</string>
+    <string name="kg2">2 kg</string>
+    <string name="kg5">5 kg</string>
+    <string name="kg10">10 kg</string>
 
 </resources>
