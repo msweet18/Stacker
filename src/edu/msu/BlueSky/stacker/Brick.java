@@ -13,6 +13,13 @@ public class Brick {
 	 * of the brick.
 	 */
 	private float xPosition = .5f;
+	
+	/**
+	 * x location. 
+	 * We use relative x locations in the range 0-1 for the center
+	 * of the brick.
+	 */
+	private int yPosition = 0;
 
 	/**
 	 * weight of the brick
@@ -53,12 +60,37 @@ public class Brick {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	public void draw(Canvas canvas, int brickNumber){
-		int y = canvas.getHeight()-(brick.getHeight()*(brickNumber+1)); //y position to draw
-		int x = (int)(xPosition*canvas.getWidth())-brick.getWidth()/2;
+	public void draw(Canvas canvas, int brickNumber, float scaleFactor){
+		yPosition = (int)(canvas.getHeight()-(brick.getHeight()*(brickNumber+1)*scaleFactor));
+		int y = (int)(canvas.getHeight()-(brick.getHeight()*(brickNumber+1)*scaleFactor)); //y position to draw
+		int x = (int)(xPosition*canvas.getWidth());
 		Log.i("draw", "y = "+y);
 		canvas.save();
-		canvas.drawBitmap(brick, x, y, null);
+		canvas.translate(x, y);
+		canvas.scale(scaleFactor, scaleFactor);
+		canvas.translate(-brick.getWidth() / 2, 0);
+		canvas.drawBitmap(brick, 0, 0, null);
 		canvas.restore();
+	}
+	
+	public boolean hit(float testX, float testY, int screenWidth, int screenHeight, float scaleFactor){
+		// Make relative to the location and size to the piece size
+        int pX = (int)((testX - xPosition) * screenWidth / scaleFactor) + brick.getWidth() / 2;
+        int pY = (int)(testY*screenHeight/scaleFactor) - (int)(yPosition/scaleFactor);
+        
+        if(pX < 0 || pX >= brick.getWidth() ||
+           pY < 0 || pY >= brick.getHeight()) {
+        	Log.i("Hit Test", "Failed "+pX+", "+brick.getWidth()+", "+pY+", "+ brick.getHeight()+", "+yPosition);
+        	return false;
+        }
+        Log.i("Hit Test", "Passed");
+        // We are within the rectangle of the piece.
+        // Are we touching actual picture?
+		return true;
+	}
+	
+	public void move(float dx){
+		xPosition+=dx;
+		Log.i("dragging", xPosition+", "+dx);
 	}
 }

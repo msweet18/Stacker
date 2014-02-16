@@ -29,7 +29,7 @@ public class GameView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		return super.onTouchEvent(event);
+		return game.onTouchEvent(this, event);
 	}
 
 	@Override
