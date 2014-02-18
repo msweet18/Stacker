@@ -80,7 +80,6 @@ public class Brick {
         
         if(pX < 0 || pX >= brick.getWidth() ||
            pY < 0 || pY >= brick.getHeight()) {
-        	Log.i("Hit Test", "Failed "+pX+", "+brick.getWidth()+", "+pY+", "+ brick.getHeight()+", "+yPosition);
         	return false;
         }
         Log.i("Hit Test", "Passed");
@@ -92,5 +91,9 @@ public class Brick {
 	public void move(float dx){
 		xPosition+=dx;
 		Log.i("dragging", xPosition+", "+dx);
+	}
+	
+	public float getBrickWidth(){
+		return brick.getWidth();
 	}
 }

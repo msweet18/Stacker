@@ -54,6 +54,18 @@ public class Game {
     private Context context;
     
     private boolean brickIsSet = true;
+    
+	private float total;
+	
+	private float variance;
+	
+	private float maxX;
+	
+	private float minX;
+	
+	private int Tmass;
+	
+	private double massPosition;
 
 	public Game(Context c, GameView view){
 		context = c;
@@ -179,8 +191,60 @@ public class Game {
 	
 	public void setBrick(){
 		//check balance
+		if(!isBallanced()){
+			Log.i("GAME OVER", "fell");
+		}
 		
 		brickIsSet = true;
+	}
+	
+	public int getTotalMass(int size){
+		for(int ii=1;ii<=size;ii++)
+		{
+			Tmass += bricks.get(ii).getWeight();
+		}
+		return Tmass;
+	}
+	
+	public boolean isBallanced(){
+		if(bricks.size()<=1)
+		{
+			return true;
+		}
+		variance = (bricks.get(0).getBrickWidth()*scaleFactor)/2;
+		maxX = (bricks.get(0).getX()*screenWidth) + variance;
+		minX = (bricks.get(0).getX()*screenWidth) - variance;
+		Log.i("maxX", Float.toString(maxX));
+		Log.i("minX", Float.toString(minX));
+		
+		for(int ii=1;ii<bricks.size();ii++)
+		{
+			Tmass = getTotalMass(ii);
+			total = 0;
+			int xx = ii;
+			while(xx > 0)
+			{
+				total += (bricks.get(xx).getWeight() * bricks.get(xx).getX()*screenWidth);
+				Log.i("weight", Float.toString(bricks.get(xx).getWeight()));
+				Log.i("xlocation on screen", Float.toString(bricks.get(xx).getX()*screenWidth));
+				xx--;
+			}	
+			massPosition = (1.0/Tmass)*total;
+			Log.i("total", Float.toString(total));
+			Log.i("total", Float.toString(Tmass));
+			Log.i("total", Double.toString(1.0/Tmass));
+			Log.i("xxxxxxxxxxxx", Double.toString(massPosition));
+			
+			if (massPosition > maxX || massPosition < minX)
+			{
+				Log.i("FAilED", "Failfailfailfail");
+				return false;
+			}
+			Tmass = 0;
+		}
+		
+		return true;
+
 	}
 	
 }
