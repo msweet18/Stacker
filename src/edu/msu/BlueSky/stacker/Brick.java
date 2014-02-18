@@ -33,10 +33,10 @@ public class Brick {
 	
 	private boolean IsPlayer1;
 
-	public Brick(Context context, boolean Player1){
+	public Brick(Context context, boolean Player1, int w){
 		IsPlayer1 = Player1;
-		if(IsPlayer1)
-		{
+		weight = w;
+		if(IsPlayer1){
 			//assign color brick
 			brick = BitmapFactory.decodeResource(context.getResources(), R.drawable.brick_blue);
 		}

@@ -62,4 +62,9 @@ public class GameView extends View {
 	public void loadInstanceState(Bundle bundle) {
 		game.loadInstanceState(bundle);
 	}
+	
+	public void createNewBrick(int weight){
+		game.createNewBrick(weight);
+		this.invalidate();
+	}
 }

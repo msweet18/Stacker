@@ -41,6 +41,26 @@ public class GameActivity extends Activity {
 		gameView.saveInstanceState(bundle);
 	}
 	
+	public void addNewBrick1(View view){
+		gameView = (GameView)this.findViewById(R.id.gameView);
+		gameView.createNewBrick(1);
+	}
+	
+	public void addNewBrick2(View view){
+		gameView = (GameView)this.findViewById(R.id.gameView);
+		gameView.createNewBrick(2);
+	}
+	
+	public void addNewBrick5(View view){
+		gameView = (GameView)this.findViewById(R.id.gameView);
+		gameView.createNewBrick(5);
+	}
+	
+	public void addNewBrick10(View view){
+		gameView = (GameView)this.findViewById(R.id.gameView);
+		gameView.createNewBrick(10);
+	}
+	
 	public void onEndGame(View view) {
 		Intent intent = new Intent(this, FinalScoreActivity.class);
 		startActivity(intent);

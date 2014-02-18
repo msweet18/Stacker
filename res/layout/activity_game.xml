@@ -15,6 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="addNewBrick1"
             android:text="@string/kg1" />
 
         <Button
@@ -22,6 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="addNewBrick2"
             android:text="@string/kg2" />
 
         <Button
@@ -29,6 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="addNewBrick5"
             android:text="@string/kg5" />
 
         <Button
@@ -36,6 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="addNewBrick10"
             android:text="@string/kg10" />
 
         <Button

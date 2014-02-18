@@ -14,9 +14,12 @@ import android.view.View;
 public class Game {
 	
 	/**
-	 * The name of the bundle keys to save the puzzle
+	 * The name of the bundle keys to save the game
 	 */
 	private final static String XLOCATIONS = "Game.xLocations";
+	
+	private final static String WEIGHTS = "Game.weights";
+	
 	
 	/**
 	 * Collection of Bricks
@@ -48,14 +51,11 @@ public class Game {
      */
     private float lastRelX;
     
-    /**
-     * Most recent relative Y touch when dragging
-     */
-    private float lastRelY;
+    private Context context;
 
-	public Game(Context context, GameView view){
+	public Game(Context c, GameView view){
+		context = c;
 		gameView = view;
-		bricks.add(new Brick(context, true));
 	}
 	
 	public void draw(Canvas canvas){
@@ -131,14 +131,15 @@ public class Game {
 	 */
 	public void saveInstanceState(Bundle bundle) {
 		float [] xLocations = new float[bricks.size()];
-		
+		int [] weights = new int[bricks.size()];
 		
 		for(int i=0;  i<bricks.size(); i++) {
 			Brick brick = bricks.get(i);
 			xLocations[i] = brick.getX();
+			weights[i] = brick.getWeight();
 		}
-		
 		bundle.putFloatArray(XLOCATIONS, xLocations);
+		bundle.putIntArray(WEIGHTS, weights);
 	}
 	
 	/**
@@ -147,7 +148,9 @@ public class Game {
 	 */
 	public void loadInstanceState(Bundle bundle) {
 		float [] xLocations = bundle.getFloatArray(XLOCATIONS);
+		Log.i("load", "length: "+XLOCATIONS.length());
 		for(int i=0; i<xLocations.length; i++){
+			bricks.add(new Brick(context, (i%2==0), 0));
 			bricks.get(i).setX(xLocations[i]);
 		}
 	}
@@ -160,10 +163,13 @@ public class Game {
         	dragging = topBrick;
         	Log.i("dragging", "dragging set to top brick");
             lastRelX = x;
-            lastRelY = y;
             return true;
         }
 		return false;
+	}
+	public void createNewBrick(int weight){
+		bricks.add(new Brick(context, (bricks.size()%2==0), weight));
+		Log.i("bricks", "Size: "+bricks.size());
 	}
 	
 }
