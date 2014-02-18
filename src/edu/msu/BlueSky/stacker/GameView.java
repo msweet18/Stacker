@@ -5,9 +5,10 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
+//import android.view.View;
+import android.widget.ScrollView;
 
-public class GameView extends View {
+public class GameView extends ScrollView {
 
 	private Game game;
 	

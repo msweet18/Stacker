@@ -52,6 +52,8 @@ public class Game {
     private float lastRelX;
     
     private Context context;
+    
+    private boolean brickIsSet = true;
 
 	public Game(Context c, GameView view){
 		context = c;
@@ -120,6 +122,7 @@ public class Game {
     	if(dragging != null){
     		Log.i("on released", "dragging set to null");
     		dragging = null;
+    		brickIsSet = true;
     		return true;
     	}
 		return false;
@@ -168,8 +171,11 @@ public class Game {
 		return false;
 	}
 	public void createNewBrick(int weight){
-		bricks.add(new Brick(context, (bricks.size()%2==0), weight));
-		Log.i("bricks", "Size: "+bricks.size());
+		if(brickIsSet){
+			bricks.add(new Brick(context, (bricks.size()%2==0), weight));
+			Log.i("bricks", "Size: "+bricks.size());
+			brickIsSet = false;
+		}
 	}
 	
 }
