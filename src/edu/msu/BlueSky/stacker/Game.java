@@ -122,7 +122,6 @@ public class Game {
     	if(dragging != null){
     		Log.i("on released", "dragging set to null");
     		dragging = null;
-    		brickIsSet = true;
     		return true;
     	}
 		return false;
@@ -176,6 +175,12 @@ public class Game {
 			Log.i("bricks", "Size: "+bricks.size());
 			brickIsSet = false;
 		}
+	}
+	
+	public void setBrick(){
+		//check balance
+		
+		brickIsSet = true;
 	}
 	
 }

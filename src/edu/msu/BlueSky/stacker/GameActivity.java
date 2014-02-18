@@ -65,4 +65,9 @@ public class GameActivity extends Activity {
 		Intent intent = new Intent(this, FinalScoreActivity.class);
 		startActivity(intent);
 	}
+	
+	public void endTurn(View view){
+		gameView = (GameView)this.findViewById(R.id.gameView);
+		gameView.getGame().setBrick();
+	}
 }

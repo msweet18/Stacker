@@ -20,5 +20,6 @@
     <string name="score1">5</string>
     <string name="score2">4</string>
     <string name="EndGame">End Game</string>
+    <string name="EndTurn">End Turn</string>
 
 </resources>
