@@ -51,9 +51,18 @@ public class Game {
      */
     private float lastRelX;
     
+    /**
+     * Most recent relative Y touch when dragging
+     */
+    private float lastRelY;
+    
     private Context context;
     
     private boolean brickIsSet = true;
+    
+    private int yOffset = 0;
+    
+    private int brickHeight = 0;
 
 	public Game(Context c, GameView view){
 		context = c;
@@ -71,11 +80,9 @@ public class Game {
 		int minDim = wid < hit ? wid : hit;
 		
 		scaleFactor = (float)screenWidth/minDim;
-		
-		Log.i("scale", scaleFactor+", "+wid+", "+hit+", "+screenWidth);
-		
+				
 		for(Brick brick : bricks){
-			brick.draw(canvas, bricks.indexOf(brick), scaleFactor);
+			brick.draw(canvas, bricks.indexOf(brick), scaleFactor, yOffset);
 		}
 	}
 	
@@ -95,14 +102,15 @@ public class Game {
         case MotionEvent.ACTION_DOWN:
         	return onTouched(relX, relY);
         case MotionEvent.ACTION_UP:
-        	return onReleased();
+        	if(dragging != null){
+        		return onReleased();
+        	}
         case MotionEvent.ACTION_CANCEL:
         	Log.i("action cancel", "dragging set to null");
         	if(dragging != null) {
         		dragging = null;
                 return true;
             }
-            break;
         case MotionEvent.ACTION_MOVE:
         	if(dragging != null)
         	{
@@ -112,7 +120,19 @@ public class Game {
         		view.invalidate();
         		return true;
         	}
-            break;
+        	else{
+        		yOffset -= (int)((relY-lastRelY)*screenHeight);
+        		if(yOffset>0)
+        		{
+        			yOffset=0;
+        		}
+        		Log.i("scrolling", "lastRelY: "+lastRelY);
+        		Log.i("scrolling", "relY: "+relY);
+        		Log.i("scrolling", "yOffset: "+yOffset);
+        		lastRelY = relY;
+        		view.invalidate();
+        		return true;
+        	}
         }
         return false;
     }
@@ -160,14 +180,15 @@ public class Game {
 	private boolean onTouched(float x, float y){
 		Log.i("touched", x+" "+y);
 		Brick topBrick = bricks.get(bricks.size()-1); 
-		if(topBrick.hit(x, y, screenWidth, screenHeight, scaleFactor)) {
+		if(topBrick.hit(x, y+((float)yOffset/screenHeight), screenWidth, screenHeight, scaleFactor)) {
             // We hit a piece!
         	dragging = topBrick;
         	Log.i("dragging", "dragging set to top brick");
             lastRelX = x;
             return true;
         }
-		return false;
+		lastRelY = y;
+		return true;
 	}
 	public void createNewBrick(int weight){
 		if(brickIsSet){
@@ -175,6 +196,14 @@ public class Game {
 			Log.i("bricks", "Size: "+bricks.size());
 			brickIsSet = false;
 		}
+		brickHeight = (int)(bricks.get(0).getHeight()*scaleFactor);
+		if((int)(screenHeight*.7)-brickHeight*bricks.size()<0){
+			yOffset = (int)(screenHeight*.7)-brickHeight*bricks.size();
+		}
+		else{
+			yOffset = 0;
+		}
+			
 	}
 	
 	public void setBrick(){

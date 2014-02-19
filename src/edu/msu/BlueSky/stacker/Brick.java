@@ -60,13 +60,12 @@ public class Brick {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	public void draw(Canvas canvas, int brickNumber, float scaleFactor){
+	public void draw(Canvas canvas, int brickNumber, float scaleFactor, int yOffset){
 		yPosition = (int)(canvas.getHeight()-(brick.getHeight()*(brickNumber+1)*scaleFactor));
 		int y = (int)(canvas.getHeight()-(brick.getHeight()*(brickNumber+1)*scaleFactor)); //y position to draw
 		int x = (int)(xPosition*canvas.getWidth());
-		Log.i("draw", "y = "+y);
 		canvas.save();
-		canvas.translate(x, y);
+		canvas.translate(x, y-yOffset);
 		canvas.scale(scaleFactor, scaleFactor);
 		canvas.translate(-brick.getWidth() / 2, 0);
 		canvas.drawBitmap(brick, 0, 0, null);
@@ -92,5 +91,9 @@ public class Brick {
 	public void move(float dx){
 		xPosition+=dx;
 		Log.i("dragging", xPosition+", "+dx);
+	}
+	
+	public int getHeight(){
+		return brick.getHeight();
 	}
 }
