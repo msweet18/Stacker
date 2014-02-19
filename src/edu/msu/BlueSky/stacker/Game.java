@@ -84,7 +84,7 @@ public class Game {
 		
 		scaleFactor = (float)screenWidth/minDim;
 		
-		Log.i("scale", scaleFactor+", "+wid+", "+hit+", "+screenWidth);
+//		Log.i("scale", scaleFactor+", "+wid+", "+hit+", "+screenWidth);
 		
 		for(Brick brick : bricks){
 			brick.draw(canvas, bricks.indexOf(brick), scaleFactor);
@@ -119,7 +119,7 @@ public class Game {
         	if(dragging != null)
         	{
         		dragging.move(relX-lastRelX);
-        		Log.i("dragging", "top brick is being dragged");
+        	//	Log.i("dragging", "top brick is being dragged");
         		lastRelX = relX;
         		view.invalidate();
         		return true;
@@ -170,6 +170,9 @@ public class Game {
 	}
 	
 	private boolean onTouched(float x, float y){
+		if(brickIsSet){
+			return false;
+		}
 		Log.i("touched", x+" "+y);
 		Brick topBrick = bricks.get(bricks.size()-1); 
 		if(topBrick.hit(x, y, screenWidth, screenHeight, scaleFactor)) {
@@ -198,8 +201,16 @@ public class Game {
 		brickIsSet = true;
 	}
 	
-	public int getTotalMass(int size){
+	public int getBottomUpTotalMass(int size){
 		for(int ii=1;ii<=size;ii++)
+		{
+			Tmass += bricks.get(ii).getWeight();
+		}
+		return Tmass;
+	}
+	
+	public int getTopDownTotalMass(int size){
+		for(int ii=size;ii<bricks.size();ii++)
 		{
 			Tmass += bricks.get(ii).getWeight();
 		}
@@ -212,23 +223,27 @@ public class Game {
 			return true;
 		}
 		variance = (bricks.get(0).getBrickWidth()*scaleFactor)/2;
-		maxX = (bricks.get(0).getX()*screenWidth) + variance;
-		minX = (bricks.get(0).getX()*screenWidth) - variance;
+	//	maxX = (bricks.get(0).getX()*screenWidth) + variance;
+	//	minX = (bricks.get(0).getX()*screenWidth) - variance;
 		Log.i("maxX", Float.toString(maxX));
 		Log.i("minX", Float.toString(minX));
-		
-		for(int ii=1;ii<bricks.size();ii++)
+
+		for(int ii=bricks.size()-1;ii>0;ii--)
 		{
-			Tmass = getTotalMass(ii);
-			total = 0;
 			int xx = ii;
-			while(xx > 0)
+			Tmass = getTopDownTotalMass(ii);
+			Log.i("MAssMassMass", Integer.toString(Tmass));
+			maxX = (bricks.get(ii-1).getX()*screenWidth) + variance;
+			minX = (bricks.get(ii-1).getX()*screenWidth) - variance;
+			
+			while(xx<bricks.size())
 			{
-				total += (bricks.get(xx).getWeight() * bricks.get(xx).getX()*screenWidth);
-				Log.i("weight", Float.toString(bricks.get(xx).getWeight()));
-				Log.i("xlocation on screen", Float.toString(bricks.get(xx).getX()*screenWidth));
-				xx--;
-			}	
+				float tempWeight = bricks.get(xx).getWeight();
+				float tempXpos = bricks.get(xx).getX()*screenWidth;
+				
+				total += (tempWeight * tempXpos);
+				xx++;
+			}
 			massPosition = (1.0/Tmass)*total;
 			Log.i("total", Float.toString(total));
 			Log.i("total", Float.toString(Tmass));
@@ -238,9 +253,14 @@ public class Game {
 			if (massPosition > maxX || massPosition < minX)
 			{
 				Log.i("FAilED", "Failfailfailfail");
+				massPosition = 0;
 				return false;
 			}
+			
+			
 			Tmass = 0;
+			total = 0;
+			
 		}
 		
 		return true;
